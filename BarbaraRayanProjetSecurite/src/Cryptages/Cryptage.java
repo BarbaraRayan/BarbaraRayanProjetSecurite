@@ -20,17 +20,10 @@ public class Cryptage {
     /**
      * @param args the command line arguments
      */
-    String encryptedValue;
-    String secKey;
-
-    public Cryptage(String encryptedValue, String secKey) {
-        this.encryptedValue = encryptedValue;
-        this.secKey = secKey;
-    }
 
     public static void main(String[] args) {
 
-        String messageToEncode = "a";
+        String messageToEncrypt = "a";
 
         try {
             //We create a key
@@ -40,21 +33,21 @@ public class Cryptage {
             //We enter the encoding phase of the message
             cipher.init(Cipher.ENCRYPT_MODE, key);
             //We transform the encoded message from String to Byte
-            byte[] res = cipher.doFinal(messageToEncode.getBytes());
+            byte[] m1 = cipher.doFinal(messageToEncrypt.getBytes());
             //We transform the encoded message from Byte to String. Here we have a coded message that needs the key to be read
-            String codedMessage = Base64.getEncoder().encodeToString(res);
+            String encryptedMessage = Base64.getEncoder().encodeToString(m1);
             //We enter the decoding phase of the message
             cipher.init(Cipher.DECRYPT_MODE, key);
             //We decode the encoded message
-            byte[] res2 = cipher.doFinal(Base64.getDecoder().decode(codedMessage));
+            byte[] m2 = cipher.doFinal(Base64.getDecoder().decode(encryptedMessage));
             //We display the decoded message
-            String decodedMessage = new String(res2);
+            String decryptedMessage = new String(m2);
             //We display the message sent at the beggin
-            System.out.println("Message to code:" + messageToEncode);
+            System.out.println("Message to encrypt:" + messageToEncrypt);
             //We display the encoded message
-            System.out.println("Encoded message:" + codedMessage);
+            System.out.println("Encrypted message:" + encryptedMessage);
             //We display the decoded message
-            System.out.println("Decoded message:" + decodedMessage);
+            System.out.println("Decrypted message:" + decryptedMessage);
             //We recover the key 
             byte[] keyByte = key.getEncoded();
             //We display the key

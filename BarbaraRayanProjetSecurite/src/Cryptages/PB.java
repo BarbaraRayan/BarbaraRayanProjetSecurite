@@ -35,8 +35,8 @@ public class PB {
     public static byte[] encrypt(final String message, SecretKey key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] donnees = message.getBytes();
-        return cipher.doFinal(donnees);
+        byte[] encryptedMessage = message.getBytes();
+        return cipher.doFinal(encryptedMessage);
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, FileNotFoundException, IOException {
@@ -48,8 +48,8 @@ public class PB {
         String userInput;
         boolean doRun = true;
         //We recover and read the key present in the text file
-        File f = new File("key.txt");
-        FileReader fr = new FileReader(f.getAbsoluteFile());
+        File file = new File("key.txt");
+        FileReader fr = new FileReader(file.getAbsoluteFile());
         BufferedReader br = new BufferedReader(fr);
         String cle = br.readLine();
         br.close();
@@ -76,7 +76,6 @@ public class PB {
                     while (input == null) {
                         input = in.readLine();
                     }
-
                     System.out.println(input);
                     if (input.compareToIgnoreCase("Bye") == 0) {
                         System.out.println("Client shutting down from server request");
@@ -89,7 +88,6 @@ public class PB {
                             System.out.println("Shutting down");
                             doRun = false;
                         }
-
                     }
                 }
             }

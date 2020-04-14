@@ -47,20 +47,20 @@ public class ChatServer implements Runnable {
         index = u;
     }
 
-    public static String decrypt(final String encodedMessage, String encodedKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        byte[] donnees = Base64.getDecoder().decode(encodedMessage);
+    public static String decrypt(final String encryptedMessage, String encodedKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        byte[] decryptedMessage = Base64.getDecoder().decode(encryptedMessage);
         byte[] key = Base64.getDecoder().decode(encodedKey);
         SecretKey cle = new SecretKeySpec(key, 0, key.length, "AES");
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, cle);
-        return new String(cipher.doFinal(donnees));
+        return new String(cipher.doFinal(decryptedMessage));
     }
 
     public void run() {
-        File f = new File("key.txt");
+        File file = new File("key.txt");
         FileReader fr;
         try {
-            fr = new FileReader(f.getAbsoluteFile());
+            fr = new FileReader(file.getAbsoluteFile());
             BufferedReader br = new BufferedReader(fr);
             String cle = br.readLine();
             br.close();
@@ -77,10 +77,10 @@ public class ChatServer implements Runnable {
                     while (talk == null) {
                         talk = in.readLine();
                     }
-                    System.out.println("Encoded message : " + talk);
+                    System.out.println("Encrypted message : " + talk);
                     String dec = decrypt(talk, cle);
-                    System.out.println("Decoded message: " + dec);
-                    if (talk.compareToIgnoreCase("bye") == 0) {
+                    System.out.println("Decrypted message: " + dec);
+                    if (talk.compareToIgnoreCase("Bye") == 0) {
                         System.out.println("Shutting down following remote request");
                         doRun = false;
                     } else {

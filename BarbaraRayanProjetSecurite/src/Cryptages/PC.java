@@ -81,20 +81,20 @@ public class PC {
     }
     
     //Method decrypting the message
-    public static String decrypt(final String encodedMessage, String encodedKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        byte[] donnees = Base64.getDecoder().decode(encodedMessage);
+    public static String decrypt(final String encryptedMessage, String encodedKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        byte[] decryptedMessage = Base64.getDecoder().decode(encryptedMessage);
         byte[] key = Base64.getDecoder().decode(encodedKey);
         SecretKey cle = new SecretKeySpec(key, 0, key.length, "AES");
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, cle);
-        return new String(cipher.doFinal(donnees));
+        return new String(cipher.doFinal(decryptedMessage));
     }
     
     //Method encrypting the message
     public static byte[] encrypt(final String message, SecretKey key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] donnees = message.getBytes();
-        return cipher.doFinal(donnees);
+        byte[] encryptedMessage = message.getBytes();
+        return cipher.doFinal(encryptedMessage);
     }
 }
